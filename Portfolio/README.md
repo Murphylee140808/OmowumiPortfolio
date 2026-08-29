@@ -1,4 +1,4 @@
-# Omowumi Akindehinde Portfolio
+# Akindehinde Omowumi Portfolio
 
 A polished, responsive portfolio website for a no-code website designer and digital solutions specialist. The project is built with plain HTML, CSS, and JavaScript and does not require any package installation or build step.
 
