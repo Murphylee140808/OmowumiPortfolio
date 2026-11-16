@@ -106,19 +106,30 @@ const trail=[...document.querySelectorAll('.cursor-trail i')];const trailCursor=
 if(trail.length&&supportsPointer){
   if(!window.gsap)console.error('GSAP failed to load; the cursor trail is disabled.');
   else{
+    document.body.classList.add('has-gsap-cursor');
     gsap.set(trail,{xPercent:-50,yPercent:-50});
     const moveTrail=trail.map((dot,index)=>({
       x:gsap.quickTo(dot,'x',{duration:reducedMotion.matches?0:.18+index*.035,ease:'power3.out'}),
       y:gsap.quickTo(dot,'y',{duration:reducedMotion.matches?0:.18+index*.035,ease:'power3.out'})
     }));
+    const isInteractiveTarget=target=>target instanceof Element&&Boolean(target.closest('a,button,input,select,textarea,[role="button"]'));
+    let hoveringInteractive=false;
     window.addEventListener('pointermove',event=>{
       if(!trailCursor.classList.contains('active')){
         gsap.set(trail,{x:event.clientX,y:event.clientY});
         trailCursor.classList.add('active');
       }else moveTrail.forEach(position=>{position.x(event.clientX);position.y(event.clientY)});
     },{passive:true});
-    window.addEventListener('pointerleave',()=>trailCursor.classList.remove('active'));
-    window.addEventListener('pointerdown',()=>trailCursor.classList.add('active'));
-    window.addEventListener('pointerup',()=>trailCursor.classList.remove('active'));
+    window.addEventListener('pointerover',event=>{
+      hoveringInteractive=isInteractiveTarget(event.target);
+      trailCursor.classList.toggle('hovering',hoveringInteractive);
+    });
+    window.addEventListener('pointerout',event=>{
+      hoveringInteractive=isInteractiveTarget(event.relatedTarget);
+      trailCursor.classList.toggle('hovering',hoveringInteractive);
+    });
+    window.addEventListener('pointerdown',()=>trailCursor.classList.add('pressed'));
+    window.addEventListener('pointerup',()=>trailCursor.classList.remove('pressed'));
+    window.addEventListener('pointerleave',()=>trailCursor.classList.remove('active','hovering','pressed'));
   }
 }

@@ -63,14 +63,17 @@ body::before {
 }
 .cursor-trail { position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
 .cursor-trail.active { opacity: 1; }
+.has-gsap-cursor, .has-gsap-cursor * { cursor: none !important; }
 .cursor-trail i {
   position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%;
   background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(126,169,115,0.72) 28%, rgba(36,91,42,0.18) 60%, transparent 72%);
   box-shadow: 0 0 0 1px rgba(36,91,42,0.14), 0 0 24px rgba(126,169,115,0.44), 0 0 52px rgba(36,91,42,0.18);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); transition: width 0.16s ease, height 0.16s ease, box-shadow 0.16s ease;
 }
 .cursor-trail i:nth-child(2n) { width: 11px; height: 11px; opacity: 0.82; }
 .cursor-trail i:nth-child(3n) { width: 7px; height: 7px; opacity: 0.54; }
+.cursor-trail.hovering i:first-child { width: 22px; height: 22px; box-shadow: 0 0 0 1px rgba(36,91,42,0.2), 0 0 30px rgba(126,169,115,0.62), 0 0 60px rgba(36,91,42,0.26); }
+.cursor-trail.pressed i:first-child { width: 12px; height: 12px; }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; }
 button { cursor: pointer; }
